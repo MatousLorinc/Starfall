@@ -1,0 +1,32 @@
+[
+	{
+		"id": 0,
+		"name": "Test 0",
+		"filePath": "test",
+		"rating": 4.2,
+		"lenght": 45.2,
+		"year": 2022,
+		"videoQuality": 4,
+		"tags": [ "aaa", "bbb", "ccc" ]
+	},
+	{
+		"id": 1,
+		"name": "Test 1",
+		"filePath": "test",
+		"rating": 4.3,
+		"lenght": 15.2,
+		"year": 2022,
+		"videoQuality": 5,
+		"tags": [ "aaa", "bbb", "ccc" ]
+	},
+	{
+		"id": 2,
+		"name": "Test 2",
+		"filePath": "test",
+		"rating": 4.4,
+		"lenght": 25.2,
+		"year": 2021,
+		"videoQuality": 5,
+		"tags": [ "aaa", "bbb", "ccc" ]
+	}
+]
