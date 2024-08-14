@@ -130,6 +130,13 @@ namespace Starfall.Pages
 
 		private void SetThumbnailImage(string path, int i)
 		{
+			// Get basic file information
+			FileInfo fileInfo = new(path);
+			string fileExtension = fileInfo.Extension;
+			List<string> allowedFileExtensions = new() { ".png", ".jpg", ".jpeg", ".bmp" };
+			if(!allowedFileExtensions.Contains(fileExtension))
+				return;
+
 			BitmapImage? image;
 			try
 			{
@@ -193,6 +200,7 @@ namespace Starfall.Pages
 					// Get basic file information
 					string fileName = System.IO.Path.GetFileNameWithoutExtension(fileInfo.FullName);
 					string fileExtension = fileInfo.Extension;
+
 					long fileSize = fileInfo.Length; // File size in bytes
 
 					// Create Shell32 instance

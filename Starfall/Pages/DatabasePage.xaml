@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Starfall.Pages"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="1080" d:DesignWidth="1920"
       Title="Database">
 	<Page.Resources>
 		<Style x:Key="MenuIcon" TargetType="Image">
@@ -81,7 +81,7 @@
 					<ColumnDefinition Width="1*" />
 				</Grid.ColumnDefinitions>
 				<Grid.RowDefinitions>
-					<RowDefinition Height="auto" />
+					<RowDefinition Height="400" />
 				</Grid.RowDefinitions>
 				<Image x:Name="FirstImage" Grid.Column="0" Height="auto" Width="auto"></Image>
 				<Image x:Name="SecondImage" Grid.Column="1" Height="auto" Width="auto"></Image>

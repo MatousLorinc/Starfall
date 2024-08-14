@@ -36,8 +36,14 @@ namespace Starfall.Controllers
 		{
 			try
 			{
+				if (!File.Exists(Database.GetFullTablePath(DatabaseFile)))
+				{
+					File.Create(Database.GetFullTablePath(DatabaseFile));
+				}
 				Movies = JsonConvert.DeserializeObject<List<MovieModel>>(File.ReadAllText(Database.GetFullTablePath(DatabaseFile)));
+				Movies ??= new();
 				return true;
+
 			}
 			catch
 			{
@@ -51,7 +57,7 @@ namespace Starfall.Controllers
 		}
 
 		public static int AddMovie(MovieModel movie) {
-			int largestId = Movies.Max(movie => movie.Id);
+			int largestId = Movies.Count > 0 ? Movies.Max(movie => movie.Id) : -1;
 			movie.Id = ++largestId;
 			Movies.Add(movie);
 			SaveMoviesData();

@@ -19,12 +19,18 @@ namespace Starfall.Controllers
 		{
 			try
 			{
+				if (!File.Exists(Database.GetFullTablePath(DatabaseFile)))
+				{
+					File.Create(Database.GetFullTablePath(DatabaseFile));
+				}
 				MovieTags = JsonConvert.DeserializeObject<List<MovieTag>>(File.ReadAllText(Database.GetFullTablePath(DatabaseFile)));
+				MovieTags ??= new();
 				return true;
 			}
 			catch
 			{
 				Log.Write(Log.LogMsgType.Chyba, "Error : Failed to deserialize database");
+				MovieTags = new();
 				return false;
 			}
 		}

@@ -17,6 +17,9 @@ namespace Starfall
 		/// </summary>
 		public static string GetFullTablePath(string filename)
     {
+			if(!Directory.Exists(DatabaseDirectory))
+				Directory.CreateDirectory(DatabaseDirectory);
+
       return Path.Combine(System.AppContext.BaseDirectory, DatabaseDirectory, filename);
 		}
 

@@ -31,6 +31,8 @@ namespace Starfall.Pages
 		Window EditMovieWindow { get; set; }
 		string SearchExpression { get; set; } = "";
 		long TagsSum { get; set; }
+
+		MovieModel SelectedMovie { get; set; }
 		public DatabasePage()
 		{
 			InitializeComponent();
@@ -39,11 +41,12 @@ namespace Starfall.Pages
 			if(MovieController.Movies.Any())
 				MoviesGrid.SelectedIndex = random.Next(0, MovieController.Movies.Count - 1);
 
-			foreach (var item in MovieTagController.MovieTags)
-			{
-				TagButton tb = new(item, SelectedTags, this);
-				TagsWrapPanel.Children.Add(tb);
-			}
+			if (MovieTagController.MovieTags is not null)
+				foreach (var item in MovieTagController.MovieTags)
+				{
+					TagButton tb = new(item, SelectedTags, this);
+					TagsWrapPanel.Children.Add(tb);
+				}
 		}
 		private void ShowMovieData(MovieModel movie)
 		{
@@ -55,30 +58,31 @@ namespace Starfall.Pages
 			MovieLengthTextBlock.Text = $"Length : {movie.Length}";
 			MovieYearTextBlock.Text = $"Year : {movie.Year}";
 			MovieQualityTextBlock.Text = $"Quality : {movie.Quality}";
+			// show movie tags
+			MovieTagsWrapPanel.Children.Clear();
+			if(MovieTagController.MovieTags is not null)
+			foreach (var tag in MovieTagController.MovieTags)
+			{
+				if ((SelectedMovie.Tags & tag.Id) != 0)
+				{
+					TagButton tb = new(tag, null, this);
+					tb.SelectTag();
+					MovieTagsWrapPanel.Children.Add(tb);
+				}
+			}
 		}
 		private void MoviesGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			if (e.AddedItems.Count > 0)
 			{
-				MovieModel selectedMovie = e.AddedItems[0] as MovieModel;
-				ShowMovieData(selectedMovie);
-				// show movie tags
-				MovieTagsWrapPanel.Children.Clear();
-				foreach (var tag in MovieTagController.MovieTags)
-				{
-					if((selectedMovie.Tags & tag.Id) != 0)
-					{
-						TagButton tb = new(tag, null, this);
-						tb.SelectTag();
-						MovieTagsWrapPanel.Children.Add(tb);
-					}
-				}
+				SelectedMovie = e.AddedItems[0] as MovieModel;
+				ShowMovieData(SelectedMovie);
 			}
 		}
 
 		private void PlayMovieButton_Click(object sender, RoutedEventArgs e)
 		{
-			MovieModel movie = (MovieModel)MoviesGrid.SelectedItem;
+			MovieModel movie = SelectedMovie;
 			MovieController.OpenVideo(movie);
 		}
 
@@ -99,7 +103,7 @@ namespace Starfall.Pages
 			EditMovieWindow.Title = "Edit Movie";
 
 			// Instantiate your NewPage or UserControl (Replace NewPage() with your actual new page instantiation logic)
-			AddMoviesPage newPage = new AddMoviesPage(this,MoviesGrid.SelectedItem as MovieModel);
+			AddMoviesPage newPage = new AddMoviesPage(this, SelectedMovie);
 
 			// Set the Content of the new window to your NewPage
 			EditMovieWindow.Content = newPage;
@@ -143,6 +147,11 @@ namespace Starfall.Pages
 		{
 			MoviesGrid.ItemsSource = null; // Clear the current ItemsSource
 			ApplyFiltering();
+			SelectedMovie = MovieController.Movies.Find(x => x.Id == SelectedMovie.Id);
+			if (SelectedMovie is not null) 
+			{
+				ShowMovieData(SelectedMovie);
+			}	
 			//MoviesGrid.ItemsSource = MovieController.Movies;
 			EditMovieWindow.Close();
 		}
